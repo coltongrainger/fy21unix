@@ -50,7 +50,24 @@ $ find .git/refs -type f
 > To create a new reference that will help you remember where your latest commit is, you can technically do something as simple as this:
 
 ```
-$ echo 1a410efbd13591db07496601ebc7a059dd55cfe9 > .git/refs/heads/master
+$ echo 1a410efbd13591db07496601ebc7a059dd55cfe9 > .git/refs/heads/test
+```
+
+But don't do that, use `git update-ref .git/refs/heads/test 1a410e`!
+
+> When you run commands like `git branch <branch>`, Git basically runs that `update-ref` command to add the SHA-1 of the last commit of the branch you’re on into whatever new reference you want to create.
+> 
+> The question now is, when you run `git branch <branch>`, how does Git know the SHA-1 of the last commit? The answer is the HEAD file.
+> 
+> Usually the HEAD file is a symbolic reference to the branch you’re currently on. By symbolic reference, we mean that unlike a normal reference, it contains a pointer to another reference.
+> 
+> However in some rare cases the HEAD file may contain the SHA-1 value of a git object. This happens when you checkout a tag, commit, or remote branch, which puts your repository in "detached HEAD" state.
+>
+> If you look at the file, you’ll normally see something like this:
+
+```
+$ cat .git/HEAD
+ref: refs/heads/master
 ```
 
 
