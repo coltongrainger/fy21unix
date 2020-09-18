@@ -1,18 +1,43 @@
-# notes from "git concepts simplified"
+# a reintroduction to git
 
-*git concepts to understand*
+Now that I actually understand *why someone might want to* 
+
+- *maintain the master branch as the source of truth* (because "it's professional to make changes in personal branches so that my team can review my merge requests in GitLab")
+
+- *trigger a CI/CD pipeline when shit merges to stable*, and also *trigger a code release when stable merges to master* (because "the clients want their mobile SDKs and we've got to release them to GitHub, but they've gotta look fly")
+
+- *tag a release* (because "opps I commited to master, pushed my changes, but that's not the source code for the processor that's in production right now")
+
+I'd better learn how it's done in `git`! Here are my sources:
+
+- <https://gitolite.com>
+- <https://git-scm.com/book/en/v2/Git-Internals-Git-References>
+- <https://questions.wizardzines.com/git-commits.html>
+
+*internals*
 
 - [ ] blobs
 - [ ] trees
 - [ ] commits
 - [ ] tags
 
-*references*
+*logs and diffs*
 
-- <https://gitolite.com>
-- <https://git-scm.com/book/en/v2/Git-Internals-Git-References>
+- [ ] branch
+- [ ] index
+- [ ] commit
+- [ ] work tree
+- [ ] git object
 
-## basics
+*collaboration*
+
+- [ ] remotes
+- [ ] squashing commits
+- [ ] rebasing
+- [ ] fetching
+- [ ] avoiding catastrophe
+
+## internals
 
 ### commits are identified by SHA-1 values
 
@@ -34,6 +59,13 @@ Date:   Thu Sep 17 15:16:25 2020 -0600
 
 <diff contents>
 ```
+
+## do you always need to refer to a commit by its full SHA?
+
+> nope!
+> 
+> You can refer to it by any prefix, like 60e2f3cdf7b938712a4c3d or 60e2f3c or even 60e2, as long as the prefix is at least 4 characters and there's only 1 commit with that prefix. 
+
 
 ### secure hash algorithms deterministically map data to fixed-length hashes
 
@@ -124,7 +156,7 @@ But wasn't the point of SHA-1 to make preimage attacks hard?! No, the point is t
 
 ### a tag is a pointer to a commit!
 
-> The tag object is very much like a commit object — it contains a tagger, a date, a message, and a pointer. The main difference is that a tag object generally points to a commit rather than a tree. It’s like a branch reference, but it never moves — it always points to the same commit but gives it a friendlier name.
+> The tag object is very much like a commit object --- it contains a tagger, a date, a message, and a pointer. The main difference is that a tag object generally points to a commit rather than a tree. It’s like a branch reference, but it never moves --- it always points to the same commit but gives it a friendlier name.
 
 > There are two types of tags: annotated and lightweight. You can make a lightweight tag by running something like this:
 
@@ -134,3 +166,15 @@ $ git update-ref refs/tags/v1.0 9e98ea52b1aee1a9e49f433e5d17d20812d66933
 
 > That is all a lightweight tag is — a reference that never moves. An annotated tag is more complex, however. If you create an annotated tag, Git creates a tag object and then writes a reference to point to it rather than directly to the commit. You can see this by creating an annotated tag (using the -a option):
 
+```
+$ git tag -a v1.1 44bd6396e2b6adaf847b64b280b005ca1dd17dfc \
+          -m "Just before explaining annotated tags"
+``` 
+
+## git basics
+
+### tracking changes to the file system
+
+> `git add` is a multipurpose command — you use it to begin tracking new files, to stage files, and to do other things like marking merge-conflicted files as resolved. It may be helpful to think of it more as “add precisely this content to the next commit” rather than “add this file to the project”.
+
+###
